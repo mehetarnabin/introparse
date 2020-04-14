@@ -7,45 +7,46 @@ void main() async {
   print(_data[1]['title']);
   String _body = "";
   for (int i = 0; i < _data.length; i++) {
-    print("Title: ${_data[i]['title']}");
-    print("Body: ${_data[i]['title']}");
+    print("Name: ${_data[i]['name']}");
+    print("Address: ${_data[i]['address']}");
+    print("Street: ${_data[i]['address']['street']}");
   }
   _body = _data[0]['body'];
   runApp(new MaterialApp(
     home:new Scaffold(
       appBar: new AppBar(
-        title: new Text('JSON Parse'),
+        title: new Text('Complex JSON Parse'),
         centerTitle: true,
         backgroundColor: Colors.orangeAccent,
       ),
       body: new Center(
-        child: new ListView.builder(
-          itemCount: _data.length,
-          padding: const EdgeInsets.all(16.0),
-          itemBuilder: (BuildContext context, int position) {
-            if(position.isOdd) return new Divider();
+          child: new ListView.builder(
+            itemCount: _data.length,
+            padding: const EdgeInsets.all(16.0),
+            itemBuilder: (BuildContext context, int position) {
+              if(position.isOdd) return new Divider();
               final index = position ~/ 2; //we are dividing position by 2 and returning an integer result.
-            return new ListTile(
-              title: new Text("${_data[index]['title']}",
-                style: new TextStyle(fontSize:14.9)),
-                subtitle: new Text("${_data[index]['body']}",
-                style: new TextStyle(fontSize: 13.4,
-                color: Colors.grey,
-                fontStyle: FontStyle.italic),
+              return new ListTile(
+                title: new Text("${_data[index]['name']}",
+                    style: new TextStyle(fontSize:14.9)),
+                subtitle: new Text("${_data[index]['address']['street']}",
+                  style: new TextStyle(fontSize: 13.4,
+                      color: Colors.grey,
+                      fontStyle: FontStyle.italic),
                 ),
                 leading: new CircleAvatar(
                   backgroundColor: Colors.green,
-                  child: new Text("${_data[index]['title'][0].toString().toUpperCase()}",
+                  child: new Text("${_data[index]['name'][0].toString().toUpperCase()}",
                     style: new TextStyle(fontSize: 19.4,
-                      color: Colors.orangeAccent
+                        color: Colors.orangeAccent
                     ),
                   ),
                 ),
 //              onTap: ()=> debugPrint("${_data[index]['id']}"),
-                onTap: (){ _showOnTapMessage(context, "${_data[index]['title']}");},
-            );
-          },
-        )
+                onTap: (){ _showOnTapMessage(context, "${_data[index]['website']}");},
+              );
+            },
+          )
       ),
     ),
   ));
@@ -63,7 +64,7 @@ void _showOnTapMessage(BuildContext context, String message) {
   showDialog(context: context, child: alert);
 }
 Future<List> getJson() async {
-  String apiUrl = 'https://jsonplaceholder.typicode.com/posts';
+  String apiUrl = 'https://jsonplaceholder.typicode.com/users';
   http.Response response = await http.get(apiUrl);
 //  return JSON.decode(response.body);
   return json.decode(response.body);
